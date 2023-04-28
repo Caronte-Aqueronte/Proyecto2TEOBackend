@@ -1,0 +1,1 @@
+db.usuarios.createIndex({ correoElectronico: 1 }, { unique: true });//creando un index para la coleccion usuarios

@@ -44,4 +44,4 @@ start();//llamamos la funcion
 //haciendo uso de las rutas
 app.use('/usuario', usuarioRoutes);//las rutas para los usuarios seran leidas desde localost/usuario/
 
-app.listen(3000);//exuchando por el pueto 3000
+app.listen(3000);//exuchando por el puerto 3000

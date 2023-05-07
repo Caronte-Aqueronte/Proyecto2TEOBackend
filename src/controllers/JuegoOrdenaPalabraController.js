@@ -1,5 +1,5 @@
 const Juego = require('../models/Juego');
-const Usuario = require('../models/Juego');
+const Punteo = require('../models/Punteo');
 
 const crearJuegoOrdenaPalabra = async (req, res) => {
     const estructuraDeJuego = req.body;//obtenemos el body con la estructura
@@ -74,6 +74,50 @@ const iniciarJuegoOrdenaPalabra = async (req, res) => {
     res.json(juegoEncontrado.palabras);
 }
 
+const calificarJuegoOrdenaPalabra = async (req, res) => {
+    const id = req.body.id;
+    const respuestas = req.body.respuestas;
+    const nombreJugador = req.body.jugador;
+    //validacion de campos que no pueden ser nulos o vacios
+    if (!id || id == "" || !respuestas || !nombreJugador || nombreJugador == "") {
+        res.json({ estado: false, respuesta: "Parametros vacios." });
+        return;
+    }
+
+    //mandamos a buscar el juego que tenga el id mandado
+    const juegoEncontrado = await Juego.findById({ _id: id });
+    console.log(juegoEncontrado)
+
+    const palabrasJuego = juegoEncontrado.palabras;//extraemos las palabras del juego encontrado
+
+
+    if (respuestas.length <= 0) {//si no hay respuestas entonces enviamos un 0 como punteo
+       
+        res.json({ punteo: 0 });
+        guardarRecordDeJugador(0, nombreJugador, id);//mandamos a guardar el punteo del jugador
+        return;
+    }
+
+    var punteo = 0;//el numero de puntos que el usuario logro alcanzar
+    for (let x = 0; x < palabrasJuego.length; x++) {//iteramos en cada una de las palabras y verificamos
+        if (palabrasJuego[x].palabra == respuestas[x].palabra) {
+            punteo++;//sumamos un punto 
+        }
+    }
+    //mandamos a guardar el punteo del usuario
+
+    guardarRecordDeJugador(punteo, nombreJugador, id)
+
+    res.json({ punteo: punteo });
+
+}
+
+const guardarRecordDeJugador = async (punteo, nombreJugador, codigoDeJuego) => {
+    const punteoGuardado = await Punteo.insertMany({ codigoDelJuego: codigoDeJuego, usuarioJugador: nombreJugador, punteo: punteo });
+
+    return punteoGuardado;
+}
+
 function desordenarPalabra(palabraArray) {
     palabraArray.sort(() => Math.random() - 0.5);
 }
@@ -94,4 +138,5 @@ function construirNuevaPalabra(palabraArray) {
 module.exports = {
     crearJuegoOrdenaPalabra: crearJuegoOrdenaPalabra,
     iniciarJuegoOrdenaPalabra: iniciarJuegoOrdenaPalabra,
+    calificarJuegoOrdenaPalabra:calificarJuegoOrdenaPalabra
 }

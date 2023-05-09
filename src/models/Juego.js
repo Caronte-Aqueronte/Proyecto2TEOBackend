@@ -9,7 +9,6 @@ const JuegoSchema = new Schema(
 
     {
         usuarioCreador: String,
-        codigoDeJuego: String,//codigo unico de juego
         nombre: String,//titulo del juego
         tipo: String, //categoria del juego
 

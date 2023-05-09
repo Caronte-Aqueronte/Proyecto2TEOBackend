@@ -1,3 +1,4 @@
+const { default: mongoose } = require('mongoose');
 const Punteo = require('../models/Punteo');
 
 
@@ -8,9 +9,11 @@ const traerRankingDeUnJuego = async (req, res) => {
         res.json({});
     }
 
+    var idConvert = new mongoose.Types.ObjectId(id);
+
     const ranking = await Punteo.aggregate([
-        { $match: { codigoDelJuego: id } },//filtra por fechas de compra
-        { $sort: { punteo: -1 } },
+        { $match: { codigoDelJuego: idConvert } },//filtra por fechas de compra
+        { $sort: {  punteo: -1, tiempo: 1 } },
         { $limit: 10 }
     ])
 

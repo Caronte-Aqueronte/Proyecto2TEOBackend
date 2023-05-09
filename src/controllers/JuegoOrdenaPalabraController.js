@@ -78,6 +78,7 @@ const calificarJuegoOrdenaPalabra = async (req, res) => {
     const id = req.body.id;
     const respuestas = req.body.respuestas;
     const nombreJugador = req.body.jugador;
+    const tiempo = req.body.tiempo;
     //validacion de campos que no pueden ser nulos o vacios
     if (!id || id == "" || !respuestas || !nombreJugador || nombreJugador == "") {
         res.json({ estado: false, respuesta: "Parametros vacios." });
@@ -92,9 +93,9 @@ const calificarJuegoOrdenaPalabra = async (req, res) => {
 
 
     if (respuestas.length <= 0) {//si no hay respuestas entonces enviamos un 0 como punteo
-       
+
         res.json({ punteo: 0 });
-        guardarRecordDeJugador(0, nombreJugador, id);//mandamos a guardar el punteo del jugador
+        guardarRecordDeJugador(0, nombreJugador, id, tiempo);//mandamos a guardar el punteo del jugador
         return;
     }
 
@@ -104,16 +105,18 @@ const calificarJuegoOrdenaPalabra = async (req, res) => {
             punteo++;//sumamos un punto 
         }
     }
-    //mandamos a guardar el punteo del usuario
+    //mandamos a guardar el punteo del usuario juento con el nombre del juagor, el id del juego y el tiempo
 
-    guardarRecordDeJugador(punteo, nombreJugador, id)
+    guardarRecordDeJugador(punteo, nombreJugador, id, tiempo)
 
     res.json({ punteo: punteo });
 
 }
 
-const guardarRecordDeJugador = async (punteo, nombreJugador, codigoDeJuego) => {
-    const punteoGuardado = await Punteo.insertMany({ codigoDelJuego: codigoDeJuego, usuarioJugador: nombreJugador, punteo: punteo });
+const guardarRecordDeJugador = async (punteo, nombreJugador, codigoDeJuego, tiempo) => {
+
+    const tiempoFinalizacion = new Date(tiempo * 1000).toISOString().slice(11, 19); //convierte el tiempo en segundos ha formato hh::mm::ss
+    const punteoGuardado = await Punteo.insertMany({ codigoDelJuego: codigoDeJuego, usuarioJugador: nombreJugador, punteo: punteo, tiempo: tiempoFinalizacion });
 
     return punteoGuardado;
 }
@@ -138,5 +141,5 @@ function construirNuevaPalabra(palabraArray) {
 module.exports = {
     crearJuegoOrdenaPalabra: crearJuegoOrdenaPalabra,
     iniciarJuegoOrdenaPalabra: iniciarJuegoOrdenaPalabra,
-    calificarJuegoOrdenaPalabra:calificarJuegoOrdenaPalabra
+    calificarJuegoOrdenaPalabra: calificarJuegoOrdenaPalabra
 }

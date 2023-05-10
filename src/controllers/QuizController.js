@@ -68,15 +68,8 @@ const JugarQuiz = async (req, res) => {
             const respuesta = req.body[i]; // Obtenemos la respuesta enviada en el body con el índice correspondiente
 
             // Verifico si la respuesta es correcta
-            if (pregunta.opciones) { // Si la pregunta tiene opciones, verifico si la respuesta enviada coincide con la opción correcta
-                if (respuesta == pregunta.respuestaCorrecta) {
-                    //Sumo el puntaje si la respueta es correcta 
-                    puntajeTotal++;
-                }
-            } else { // Si la pregunta no tiene opciones, comparo la respuesta enviada con la respuesta correcta
-                if (respuesta == pregunta.respuestaCorrecta) {
-                    puntajeTotal++;
-                }
+            if (respuesta == pregunta.respuestaCorrecta) {
+                puntajeTotal++;
             }
         }
 

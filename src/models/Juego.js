@@ -34,12 +34,12 @@ const JuegoSchema = new Schema(
             {
                 //Agrego tres campos, pregunta, opciones de respuesta, y la respuesta correcta
                 pregunta: String,
-                opciones: [String],
+                opciones: [{ opcion: String }],
                 respuestaCorrecta: String,
             }
         ],
         //preguntas que serviran si el juego es de tipo quizz
-       // preguntas: Array,
+        // preguntas: Array,
         //pares que serviran si el juego es de tipo memoria
         pares: Array,
 

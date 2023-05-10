@@ -1,4 +1,5 @@
 const Juego = require('../models/Juego');
+const Punteo = require('../models/Punteo');
 
 //Creo el quiz, el usuario manda una pregunta, varias opciones y la respuesta correcta 
 const crearQuiz = async (req, res) => {
@@ -41,7 +42,10 @@ const crearQuiz = async (req, res) => {
 const JugarQuiz = async (req, res) => {
     try {
         const idJuego = req.params.id;
+        const nombreJugador = req.body.jugador;
+        const tiempo = req.body.tiempo;
 
+        const respuestas = req.body.respuestas;
         //Obtengo el juego desde la BD con el Id
         const juego = await Juego.findById(idJuego);
 
@@ -65,7 +69,7 @@ const JugarQuiz = async (req, res) => {
         //Se itera sobre cada pregunta, y recibo la respueseta del usuario, usando el indice de cada pregunta 
         for (let i = 0; i < preguntasQuiz.length; i++) {
             const pregunta = preguntasQuiz[i];
-            const respuesta = req.body[i]; // Obtenemos la respuesta enviada en el body con el índice correspondiente
+            const respuesta = respuestas[i].respuesta; // Obtenemos la respuesta enviada en el body con el índice correspondiente
 
             // Verifico si la respuesta es correcta
             if (respuesta == pregunta.respuestaCorrecta) {
@@ -73,6 +77,8 @@ const JugarQuiz = async (req, res) => {
             }
         }
 
+        //mandamos a guardar el punteo del usuario jugador
+        guardarRecordDeJugador(puntajeTotal, nombreJugador, idJuego, tiempo);
         //Finalizo el juego y mando el puntaje total / sobre la cantidad de preguntas del quiz
         res.json({
             respuesta: `Juego finalizado, tu puntaje es de ${puntajeTotal}/${preguntasQuiz.length}`,
@@ -83,6 +89,15 @@ const JugarQuiz = async (req, res) => {
         res.json({ respuesta: "Error en el servidor", estado: false });
     }
 };
+
+
+const guardarRecordDeJugador = async (punteo, nombreJugador, codigoDeJuego, tiempo) => {
+
+    const tiempoFinalizacion = new Date(tiempo * 1000).toISOString().slice(11, 19); //convierte el tiempo en segundos ha formato hh::mm::ss
+    const punteoGuardado = await Punteo.insertMany({ codigoDelJuego: codigoDeJuego, usuarioJugador: nombreJugador, punteo: punteo, tiempo: tiempoFinalizacion });
+
+    return punteoGuardado;
+}
 
 
 

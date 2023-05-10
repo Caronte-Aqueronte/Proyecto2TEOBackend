@@ -28,8 +28,18 @@ const JuegoSchema = new Schema(
                 pista: String,
             }
         ],
+
+        //Preguntas que se usaran en caso sea un quiz
+        preguntasQuiz: [
+            {
+                //Agrego tres campos, pregunta, opciones de respuesta, y la respuesta correcta
+                pregunta: String,
+                opciones: [String],
+                respuestaCorrecta: String,
+            }
+        ],
         //preguntas que serviran si el juego es de tipo quizz
-        preguntas: Array,
+       // preguntas: Array,
         //pares que serviran si el juego es de tipo memoria
         pares: Array,
 

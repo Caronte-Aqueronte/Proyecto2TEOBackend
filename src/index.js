@@ -8,6 +8,7 @@ const juegoAhorcadoRoutes = require('./routes/JuegoAhorcado.routes');
 const juegoRoutes = require('./routes/Juego.routes');
 const comentarioRoutes = require('./routes/Comentario.routes');
 const punteoRoutes = require('./routes/Punteo.routes');
+const Quiz = require('./routes/Quiz.routes');
 
 //Requires respecto a configuraciones del servidor
 const cors = require("cors");
@@ -49,6 +50,7 @@ start();//llamamos la funcion
 //haciendo uso de las rutas
 app.use('/usuario', usuarioRoutes);//las rutas para los usuarios seran leidas desde localost/usuario/
 app.use('/juegoOrdenaPalabra', juegoOrdenaPalabraRoutes);
+app.use('/quiz', Quiz);
 app.use('/ahorcado', juegoAhorcadoRoutes);
 app.use('/juego', juegoRoutes);
 app.use('/comentario', comentarioRoutes);

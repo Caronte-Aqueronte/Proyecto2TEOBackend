@@ -41,7 +41,14 @@ const JuegoSchema = new Schema(
         //preguntas que serviran si el juego es de tipo quizz
         // preguntas: Array,
         //pares que serviran si el juego es de tipo memoria
-        pares: Array,
+        pares: [
+            {
+                contenido: String,
+                idPareja: Number,
+                volteado: {type: Boolean, default: false},//bandera que indicara en el front si la carta esta volteada o no
+                styleExp: {type: String, default: "rotateY(0deg)"}//bandera que indicara en el front si la carta esta volteada o no
+            }
+        ],
 
     }
 );

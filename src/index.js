@@ -5,6 +5,7 @@ const mongoose = require('mongoose');//iniciar mongoose
 const usuarioRoutes = require('./routes/Usuario.routes');
 const juegoOrdenaPalabraRoutes = require('./routes/JuegoOrdenaPalabra.routes');
 const juegoAhorcadoRoutes = require('./routes/JuegoAhorcado.routes');
+const juegoMemoriaRoutes = require('./routes/JuegoMemoria.routes');
 const juegoRoutes = require('./routes/Juego.routes');
 const comentarioRoutes = require('./routes/Comentario.routes');
 const punteoRoutes = require('./routes/Punteo.routes');
@@ -52,6 +53,7 @@ app.use('/usuario', usuarioRoutes);//las rutas para los usuarios seran leidas de
 app.use('/juegoOrdenaPalabra', juegoOrdenaPalabraRoutes);
 app.use('/quiz', Quiz);
 app.use('/ahorcado', juegoAhorcadoRoutes);
+app.use('/memoria', juegoMemoriaRoutes);
 app.use('/juego', juegoRoutes);
 app.use('/comentario', comentarioRoutes);
 app.use('/punteo', punteoRoutes);

@@ -99,9 +99,75 @@ const guardarRecordDeJugador = async (punteo, nombreJugador, codigoDeJuego, tiem
     return punteoGuardado;
 }
 
+const JugarQuizPreguntas = async (req, res) => {
+    try {
+        const idJuego = req.params.id;
+        const juego = await Juego.findById(idJuego);
 
+        console.log(juego); // Verificar el valor de "juego"
+
+        if (!juego) {
+            res.status(404).json({ mensaje: 'El juego no existe' });
+            return;
+        }
+
+        //console.log(juego.preguntasQuiz); // Verificar el valor de "juego.preguntas"
+
+        const preguntasQuiz = juego.preguntasQuiz.map(preguntaQuiz => {
+            return {
+                pregunta: preguntaQuiz.pregunta,
+                opciones: preguntaQuiz.opciones.map(opcion => opcion),
+                respuestaCorrecta: preguntaQuiz.respuestaCorrecta
+            };
+        });
+
+        res.json({ preguntasQuiz });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensaje: 'Error en el servidor' });
+    }
+}
+
+
+
+const JugarQuizRespuestas = async (req, res) => {
+    try {
+        const idJuego = req.params.id;
+        const respuestas = req.body.respuestas;
+
+        const juego = await Juego.findById(idJuego);
+
+        if (!juego) {
+            res.status(404).json({ mensaje: 'El juego no existe' });
+            return;
+        }
+
+        const preguntas = juego.preguntas;
+        let puntajeTotal = 0;
+
+        for (let i = 0; i < preguntas.length; i++) {
+            const pregunta = preguntas[i];
+            const respuesta = respuestas[i].respuesta;
+
+            if (respuesta === pregunta.respuestaCorrecta) {
+                puntajeTotal++;
+            }
+        }
+
+        // Guardar puntajeTotal en el registro del jugador
+        // ...
+
+        res.json({ puntajeTotal });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensaje: 'Error en el servidor' });
+    }
+
+}
 
 module.exports = {
     crearQuiz: crearQuiz,
-    JugarQuiz: JugarQuiz
+    JugarQuiz: JugarQuiz,
+    JugarQuizPreguntas, JugarQuizPreguntas,
+    JugarQuizRespuestas: JugarQuizRespuestas
 }

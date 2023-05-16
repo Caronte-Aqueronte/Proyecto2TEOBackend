@@ -104,15 +104,10 @@ const JugarQuizPreguntas = async (req, res) => {
         const idJuego = req.params.id;
         const juego = await Juego.findById(idJuego);
 
-        console.log(juego); // Verificar el valor de "juego"
-
         if (!juego) {
             res.status(404).json({ mensaje: 'El juego no existe' });
             return;
         }
-
-        //console.log(juego.preguntasQuiz); // Verificar el valor de "juego.preguntas"
-
         const preguntasQuiz = juego.preguntasQuiz.map(preguntaQuiz => {
             return {
                 pregunta: preguntaQuiz.pregunta,
@@ -128,46 +123,35 @@ const JugarQuizPreguntas = async (req, res) => {
     }
 }
 
+const guardarPunteoQuiz = async (req, res) => {
+    //extraer los datos del juego
+    const id = req.body.id;
+    const nombreJugador = req.body.jugador;
+    const tiempo = req.body.tiempo;
+    const punteo = req.body.punteo;
 
-
-const JugarQuizRespuestas = async (req, res) => {
-    try {
-        const idJuego = req.params.id;
-        const respuestas = req.body.respuestas;
-
-        const juego = await Juego.findById(idJuego);
-
-        if (!juego) {
-            res.status(404).json({ mensaje: 'El juego no existe' });
-            return;
-        }
-
-        const preguntas = juego.preguntas;
-        let puntajeTotal = 0;
-
-        for (let i = 0; i < preguntas.length; i++) {
-            const pregunta = preguntas[i];
-            const respuesta = respuestas[i].respuesta;
-
-            if (respuesta === pregunta.respuestaCorrecta) {
-                puntajeTotal++;
-            }
-        }
-
-        // Guardar puntajeTotal en el registro del jugador
-        // ...
-
-        res.json({ puntajeTotal });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ mensaje: 'Error en el servidor' });
+    //validacion de campos que no pueden ser nulos o vacios
+    if (!id || id == "" || !nombreJugador || nombreJugador == "" || !tiempo || !punteo) {
+        res.json({ estado: false, respuesta: "Parametros vacios." });
+        return;
     }
 
+    const tiempoFinalizacion = new Date(tiempo * 1000).toISOString().slice(11, 19); //convierte el tiempo en segundos ha formato hh::mm::ss
+    const punteoGuardado = await Punteo.insertMany({ codigoDelJuego: id, usuarioJugador: nombreJugador, punteo: punteo, tiempo: tiempoFinalizacion });
+
+    if (punteoGuardado) {
+        res.json({ estado: true, respuesta: "Tu punteo fue de " + punteo});;
+    } else {
+        res.json({ estado: false, respuesta: "Ocurrio un error inesperado" });;
+    }
+
+
 }
+
 
 module.exports = {
     crearQuiz: crearQuiz,
     JugarQuiz: JugarQuiz,
     JugarQuizPreguntas, JugarQuizPreguntas,
-    JugarQuizRespuestas: JugarQuizRespuestas
+    guardarPunteoQuiz: guardarPunteoQuiz
 }

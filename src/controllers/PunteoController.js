@@ -57,7 +57,7 @@ const traerMedallasDeUsuario = async (req, res) => {
     ])
 
     if (totalPuntosOrdenaPalabra[0] && totalPuntosOrdenaPalabra[0].punteo >= 10) {
-        medallasUsuario.push({ nombreMedalla: "Medalla de juego Ordena Palabra", imgMedalla: "medalla3", punteoTotal: totalPuntosOrdenaPalabra[0].punteo });
+        medallasUsuario.push({ nombreMedalla: "Medalla de juego Ordena Palabra por acumular mas de 10 pts", imgMedalla: "medalla3", punteoTotal: totalPuntosOrdenaPalabra[0].punteo });
     }
 
     //Para juego ahorcado
@@ -69,7 +69,7 @@ const traerMedallasDeUsuario = async (req, res) => {
     ])
 
     if (totalPuntosAhorcado[0] && totalPuntosAhorcado[0].punteo >= 10) {
-        medallasUsuario.push({ nombreMedalla: "Medalla de juego Ahorcado", imgMedalla: "medalla1", punteoTotal: totalPuntosAhorcado[0].punteo });
+        medallasUsuario.push({ nombreMedalla: "Medalla de juego Ahorcado por acumular mas de 10 pts", imgMedalla: "medalla1", punteoTotal: totalPuntosAhorcado[0].punteo });
     }
 
 
@@ -82,7 +82,7 @@ const traerMedallasDeUsuario = async (req, res) => {
     ])
 
     if (totalPuntosQuiz[0] &&  totalPuntosQuiz[0].punteo >= 10) {
-        medallasUsuario.push({ nombreMedalla: "Medalla de juego Quiz", imgMedalla: "medalla4", punteoTotal: totalPuntosQuiz[0].punteo });
+        medallasUsuario.push({ nombreMedalla: "Medalla de juego Quiz por acumular mas de 10 pts", imgMedalla: "medalla4", punteoTotal: totalPuntosQuiz[0].punteo });
     }
 
 
@@ -96,7 +96,7 @@ const traerMedallasDeUsuario = async (req, res) => {
 
     if (totalPuntosMemoria[0] && totalPuntosMemoria[0].punteo >= 1000) {
 
-        medallasUsuario.push({ nombreMedalla: "Medalla de juego Memoria", imgMedalla: "medalla2", punteoTotal: totalPuntosMemoria[0].punteo });
+        medallasUsuario.push({ nombreMedalla: "Medalla de juego Memoria por acumular mas de 1000 pts", imgMedalla: "medalla2", punteoTotal: totalPuntosMemoria[0].punteo });
     }
     res.json({ medallasUsuario });
 }

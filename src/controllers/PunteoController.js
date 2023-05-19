@@ -33,7 +33,7 @@ const traerHistorialDeJuego = async (req, res) => {
     const historial = await Punteo.aggregate([
         { $lookup: { from: 'juegos', localField: 'codigoDelJuego', foreignField: '_id', as: 'juego' } },
         { $match: { usuarioJugador: nombreUsuario } },//filtra por fechas de compra
-        { $sort: { tiempo: -1 } },
+        { $sort: { fecha: -1 } },
     ])
 
     res.json({ historial });

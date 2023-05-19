@@ -14,12 +14,27 @@ const buscarJuegoPorId = async (req, res) => {
         res.json({});
     }
 
-    const juegoEncontrado = await Juego.findById({_id:id});
+    const juegoEncontrado = await Juego.findById({ _id: id });
+
+    res.json(juegoEncontrado);
+}
+
+const mostrarJuegosDeDocente = async (req, res) => {
+    //extraer el id de query
+    const usuario = req.query.usuario;
+
+    //verificar que el id no sea nulo o vacio
+    if (!usuario || usuario == "") {
+        res.json({});
+    }
+
+    const juegoEncontrado = await Juego.find({ usuarioCreador: usuario });
 
     res.json(juegoEncontrado);
 }
 
 module.exports = {
     mostrarJuegos: mostrarJuegos,
-    buscarJuegoPorId:buscarJuegoPorId
+    buscarJuegoPorId: buscarJuegoPorId,
+    mostrarJuegosDeDocente: mostrarJuegosDeDocente
 }

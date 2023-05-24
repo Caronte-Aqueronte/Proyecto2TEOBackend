@@ -1,2 +1,4 @@
 # Proyecto2TEOBackend
-# Karla Matías 
+# 2 - Luis Monterroso
+# 10 - Karla Matías 
+# 8 - Michelle Cifuentes 
